@@ -11,6 +11,9 @@ export default function ProductPage() {
   const router = useRouter();
   const { addToCart } = useCart();
 
+  console.log("SLUG FROM URL:", JSON.stringify(params.slug));
+  console.log("ALL PRODUCT SLUGS:", JSON.stringify(products.map((p) => p.slug)));
+
   const product = products.find((p) => p.slug === params.slug);
 
   if (!product) {
