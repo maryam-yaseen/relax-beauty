@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand palette — muted botanical, not the default Tailwind green */
+  --color-ink: #1d2b22;      /* deep forest — primary text */
+  --color-moss: #2f4a35;     /* darker green — headers, dark blocks */
+  --color-sage: #4b6c52;     /* primary brand green — buttons, links */
+  --color-sage-light: #6d8f73;
+  --color-paper: #faf7f1;    /* warm ivory background */
+  --color-blush: #f0e4d8;    /* secondary card background */
+  --color-line: #e4dac9;     /* hairline borders */
+  --color-gold: #a9813f;     /* accent — prices, labels */
+  --color-gold-light: #d9c4a0;
+
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.eyebrow {
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-moss);
+  color: var(--color-paper);
+  padding: 0.9rem 2rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.btn-primary:hover {
+  background: var(--color-ink);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-ink);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1.5px solid var(--color-ink);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease, gap 0.2s ease;
+}
+.btn-ghost:hover {
+  color: var(--color-sage);
+  border-color: var(--color-sage);
+  gap: 0.65rem;
+}
+
+.card-apothecary {
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.card-apothecary:hover {
+  border-color: var(--color-gold-light);
+  box-shadow: 0 18px 40px -20px rgba(29, 43, 34, 0.25);
+  transform: translateY(-3px);
+}
+
+.divider-leaf {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--color-gold);
+}
+.divider-leaf::before,
+.divider-leaf::after {
+  content: "";
+  height: 1px;
+  width: 48px;
+  background: var(--color-line);
+}
