@@ -1,57 +1,78 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
-import ProductCard from "@/app/components/ProductCard";
 import Leaf from "@/app/components/Leaf";
-import { products as allProducts } from "@/app/data/products";
+import { useCart } from "@/app/context/CartContext";
+import { products } from "@/app/data/products";
 
-export default function Shop() {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("q")?.toLowerCase().trim() ?? "";
+export default function ProductPage() {
+  const params = useParams();
+  const router = useRouter();
+  const { addToCart } = useCart();
 
-  const products = query
-    ? allProducts.filter(
-        (p) =>
-          p.name.toLowerCase().includes(query) ||
-          p.category.toLowerCase().includes(query)
-      )
-    : allProducts;
+  const product = products.find((p) => p.slug === params.slug);
+
+  if (!product) {
+    return (
+      <>
+        <Navbar />
+        <main className="pt-32 pb-24 px-6 min-h-screen bg-[#FAF7F1] flex items-center justify-center">
+          <div className="max-w-md w-full text-center bg-white border border-[#E4DAC9] rounded-2xl p-12">
+            <Leaf className="w-8 h-8 mx-auto text-[#A9813F]" />
+            <p className="mt-4 text-[#1D2B22] font-medium">Product not found</p>
+            <button onClick={() => router.push("/shop")} className="btn-primary mt-6">
+              Back to Shop
+            </button>
+          </div>
+        </main>
+      </>
+    );
+  }
 
   return (
     <>
       <Navbar />
+      <main className="pt-32 pb-24 px-6 min-h-screen bg-[#FAF7F1]">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-14 items-start">
 
-      <main className="pt-32 pb-24 px-6 bg-[#FAF7F1] min-h-screen">
-
-        <div className="text-center max-w-xl mx-auto mb-16">
-          <p className="eyebrow">{query ? "Search Results" : "The Full Range"}</p>
-          <h1 className="font-display text-5xl text-[#1D2B22] mt-3">
-            {query ? `Results for "${searchParams.get("q")}"` : "Our Products"}
-          </h1>
-          <div className="divider-leaf mt-6">
-            <Leaf className="w-4 h-4" />
+          <div className="bg-white border border-[#E4DAC9] rounded-2xl p-8">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-96 object-cover rounded-xl"
+            />
           </div>
-        </div>
 
-        {products.length === 0 ? (
-          <div className="max-w-md mx-auto text-center bg-white border border-[#E4DAC9] rounded-2xl p-12">
-            <Leaf className="w-8 h-8 mx-auto text-[#A9813F]" />
-            <p className="mt-4 text-[#1D2B22] font-medium">Product not found</p>
-            <p className="text-[#4B5A4F] text-sm mt-1">
-              Try a different search, or browse our full range instead.
+          <div>
+            <p className="eyebrow">{product.category}</p>
+            <h1 className="font-display text-4xl text-[#1D2B22] mt-3">
+              {product.name}
+            </h1>
+            <p className="text-[#A9813F] font-semibold text-xl mt-3">
+              {product.price}
             </p>
-            <a href="/shop" className="btn-primary mt-6 inline-flex">
-              View All Products
-            </a>
+            <p className="text-[#4B5A4F] mt-6 leading-relaxed">
+              {product.description}
+            </p>
+
+            <div className="flex gap-4 mt-10">
+              <button
+                onClick={() => addToCart(product)}
+                className="btn-primary"
+              >
+                Add to Cart
+              </button>
+              <button
+                onClick={() => router.push("/shop")}
+                className="btn-ghost"
+              >
+                Back to Shop
+              </button>
+            </div>
           </div>
-        ) : (
-          <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {products.map((p) => (
-              <ProductCard key={p.slug} product={p} />
-            ))}
-          </div>
-        )}
+
+        </div>
       </main>
     </>
   );
